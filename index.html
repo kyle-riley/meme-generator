@@ -1,134 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <style type="text/css">
-        #meme_text_top,
-        #meme_text {
-            -webkit-text-stroke: 0.2vw black;
-            background-color: transparent;
-            bottom: 10px;
-            color: white;
-            font-family: "Impact";
-            font-size: 5vw;
-            left: 0px;
-            line-height: 1;
-            margin: 0.5rem;
-            position: absolute;
-            text-align: center;
-            text-transform: uppercase;
-            width: calc(100% - 1rem);
-        }
+      #meme_text_top,
+      #meme_text {
+        -webkit-text-stroke: 0.2vw black;
+        background-color: transparent;
+        bottom: 10px;
+        color: white;
+        font-family: "Impact";
+        font-size: 5vw;
+        left: 0px;
+        line-height: 1;
+        margin: 0.5rem;
+        position: absolute;
+        text-align: center;
+        text-transform: uppercase;
+        width: calc(100% - 1rem);
+      }
 
-        #meme_text_top {
-            top: 5px;
-            font-size: 6vw;
-        }
+      #meme_text_top {
+        top: 5px;
+        font-size: 6vw;
+      }
 
-        #meme_picture {
-            border: 5px solid black;
-            display: inline-block;
-        }
+      #meme_picture img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
 
-        #meme_picture img {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
+      #meme_container {
+        border: 5px solid black;
+        display: inline-block;
+        position: relative;
+      }
 
-        #meme_container {
-            display: inline-block;
-            position: relative;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        body {
-            background-color: azure;
-        }
+      body {
+        background-color: azure;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      label {
+        display: block;
+        font-size: 12px;
+        color: gray;
+      }
+
+      input {
+        font-size: 1rem;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      button {
+        background-color: #295097;
+        padding: 1rem;
+        color: white;
+        border-radius: 5px;
+        border: 0;
+      }
+
+      #give_meme {
+        position: relative;
+      }
+
+      #give_meme button {
+        position: absolute;
+        top: 14px;
+        right: 0;
+        padding: 0.7rem 0.5rem;
+      }
+
+      #give_meme input {
+        padding-right: 105px;
+      }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dog memes ('0')</title>
-</head>
+  </head>
 
-<body>
-    <h1>Meme Generator</h1>
+  <body>
     <form>
-        <p>
-            Meme text top: <input type="text" id="user_text_top" maxlength="70" oninput="update_text_top()"></p>
-        Meme text bottom: <input type="text" id="user_text" maxlength="70" oninput="update_text()"></p>
-        Meme text generator: <input type="text" id="ai_text" maxlength="70"> <button type="button"
-            onclick="call_meme()" id="meme_button">give me meme</button></p>
-        <p> Meme pic: <input type="file" id="user_picture" maxlength="70" onchange="update_image()"> or <button
-                type="button" id="dog_button" onclick="call_dog()">gimme a dog</button></p>
+      <p>
+        <label for="user_picture">Meme pic:</label>
+        <input
+          type="file"
+          id="user_picture"
+          maxlength="70"
+          onchange="update_image()"
+        />
+        or
+        <button type="button" id="dog_button" onclick="call_dog()">
+          gimme a dog
+        </button>
+      </p>
+      <p>
+        <label for="user_text_top">Meme text top:</label>
+        <input
+          type="text"
+          id="user_text_top"
+          maxlength="70"
+          oninput="update_text_top()"
+        />
+      </p>
+      <p>
+        <label for="user_text">Meme text bottom:</label>
+        <input
+          type="text"
+          id="user_text"
+          maxlength="70"
+          oninput="update_text()"
+        />
+      </p>
+      <p id="give_meme">
+        <label for="ai_text">Meme text generator:</label>
+        <input type="text" id="ai_text" maxlength="70" />
+        <button type="button" onclick="call_meme()" id="meme_button">
+          give me meme
+        </button>
+      </p>
     </form>
 
-    <div id="meme_container">
-        <div id="meme_text"></div>
-        <div id="meme_text_top"></div>
-        <div id="meme_picture"><img src="" /></div>
+    <div id="meme_container" style="display: none">
+      <div id="meme_text"></div>
+      <div id="meme_text_top"></div>
+      <div id="meme_picture"><img src="" /></div>
     </div>
 
-    <p><button onclick="download_meme()">Save</button></p>
+    <p id="save_button" style="display: none">
+      <button onclick="download_meme()">Save</button>
+    </p>
+
     <script type="text/javascript">
-        function update_text() {
-            var user_text = document.getElementById("user_text");
-            var meme_text = document.getElementById("meme_text");
-            meme_text.innerHTML = user_text.value;
-        }
-        function update_image() {
-            var img = document.querySelector('img');
-            var file = document.querySelector('input[type=file]').files[0];
-            img.src = window.URL.createObjectURL(file);
+      function update_text() {
+        var user_text = document.getElementById("user_text");
+        var meme_text = document.getElementById("meme_text");
+        meme_text.innerHTML = user_text.value;
+      }
 
-        }
-        function update_text_top() {
-            var user_text = document.getElementById("user_text_top");
-            var meme_text = document.getElementById("meme_text_top");
-            meme_text_top.innerHTML = user_text_top.value;
-        }
-        async function call_dog() {
-            var dog_button = document.getElementById("dog_button");
-            dog_button.innerHTML="loading...";
-            dog_button.disabled=true;
-            var data = await fetch("/api/dogs")
-            var dog = await data.json()
-            var img = document.querySelector('img');
-            img.src = dog.base64;
-            dog_button.innerHTML="gimme a dog";
-            dog_button.disabled=false;
-        }
-        async function call_meme() {
-            var meme_button = document.getElementById("meme_button");
-            meme_button.innerHTML="loading...";
-            meme_button.disabled=true;
-             var meme_text = document.getElementById("ai_text");
-            var data = await fetch("/api/meme", {
-                method: "post",
-                body: JSON.stringify({description:meme_text.value})
-            })
-            var meme = await data.json()
-            var user_text_top = document.getElementById("user_text_top");
-            user_text_top.value = meme.firstLine;
-            update_text_top()
+      function update_image() {
+        var img = document.querySelector("img");
+        var file = document.querySelector("input[type=file]").files[0];
+        img.src = window.URL.createObjectURL(file);
 
-            var user_text_bottom = document.getElementById("user_text");
-            user_text_bottom.value = meme.secondLine;
-            update_text()
-            meme_button.innerHTML="give me meme";
-            meme_button.disabled=false;
-        }
-        async function download_meme() {
-          const canvas = await html2canvas(
-            document.querySelector("#meme_container")
-          );
-          const data = canvas.toDataURL("image/png");
-          const link = document.createElement("a");
-          link.download = "meme.png";
-          link.href = data;
-          link.click();
-        }
+        show_image_with_save();
+      }
+
+      function update_text_top() {
+        var user_text = document.getElementById("user_text_top");
+        var meme_text = document.getElementById("meme_text_top");
+        meme_text_top.innerHTML = user_text_top.value;
+      }
+      async function call_dog() {
+        var dog_button = document.getElementById("dog_button");
+        dog_button.innerHTML = "loading...";
+        dog_button.disabled = true;
+        var data = await fetch("/api/dogs");
+        var dog = await data.json();
+        var img = document.querySelector("img");
+        img.src = dog.base64;
+        dog_button.innerHTML = "gimme a dog";
+        dog_button.disabled = false;
+
+        show_image_with_save();
+      }
+
+      function show_image_with_save() {
+        document.getElementById("meme_container").style.display =
+          "inline-block";
+        document.getElementById("save_button").style.display = "block";
+      }
+
+      async function call_meme() {
+        var meme_button = document.getElementById("meme_button");
+        meme_button.innerHTML = "loading...";
+        meme_button.disabled = true;
+        var meme_text = document.getElementById("ai_text");
+        var data = await fetch("/api/meme", {
+          method: "post",
+          body: JSON.stringify({ description: meme_text.value }),
+        });
+        var meme = await data.json();
+        var user_text_top = document.getElementById("user_text_top");
+        user_text_top.value = meme.firstLine;
+        update_text_top();
+
+        var user_text_bottom = document.getElementById("user_text");
+        user_text_bottom.value = meme.secondLine;
+        update_text();
+        meme_button.innerHTML = "give me meme";
+        meme_button.disabled = false;
+      }
+
+      async function download_meme() {
+        const canvas = await html2canvas(
+          document.querySelector("#meme_container")
+        );
+        const data = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = "meme.png";
+        link.href = data;
+        link.click();
+      }
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-</body>
-
+  </body>
 </html>
