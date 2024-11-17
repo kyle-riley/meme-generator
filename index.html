@@ -36,11 +36,13 @@
             text-transform: uppercase;
             text-align: center;
         }
+
         #meme_container {
             position: relative;
         }
+
         body {
-          background-color: azure;  
+            background-color: azure;
         }
     </style>
     <meta charset="UTF-8">
@@ -54,7 +56,10 @@
         <p>
             Meme text top: <input type="text" id="user_text_top" maxlength="70" oninput="update_text_top()"></p>
         Meme text bottom: <input type="text" id="user_text" maxlength="70" oninput="update_text()"></p>
-        <p> Meme pic: <input type="file" id="user_picture" maxlength="70" onchange="update_image()"> or <button type="button" onclick="call_dog()">gimme a dog</button></p>
+        Meme text generator: <input type="text" id="ai_text" maxlength="70"> <button type="button"
+            onclick="call_meme()">give me meme</button></p>
+        <p> Meme pic: <input type="file" id="user_picture" maxlength="70" onchange="update_image()"> or <button
+                type="button" onclick="call_dog()">gimme a dog</button></p>
     </form>
     <div id="meme_container">
         <div id="meme_text"></div>
@@ -80,11 +85,26 @@
             meme_text_top.innerHTML = user_text_top.value;
         }
         async function call_dog() {
-             var data=await fetch(`https://api.thedogapi.com/v1/images/search?limit=10&api_key=${DOG_KEY}`)
-             var dog=await data.json()
-             var img = document.querySelector('img');
-            img.src = dog[0].url
+            var data = await fetch("/api/dogs")
+            var dog = await data.json()
+            var img = document.querySelector('img');
+            img.src = dog.url
 
+        }
+        async function call_meme() {
+             var meme_text = document.getElementById("ai_text");
+            var data = await fetch("/api/meme", {
+                method: "post",
+                body: JSON.stringify({description:meme_text.value})
+            })
+            var meme = await data.json()
+            var user_text_top = document.getElementById("user_text_top");
+            user_text_top.value = meme.firstLine;
+            update_text_top()
+
+            var user_text_bottom = document.getElementById("user_text");
+            user_text_bottom.value = meme.secondLine;
+            update_text()
         }
     </script>
 </body>
