@@ -33,6 +33,18 @@
         width: calc(100% - 1rem);
       }
 
+      @media (min-width: 650px) {
+        #meme_text_top,
+        #meme_text {
+          -webkit-text-stroke: 2px black !important;
+          font-size: 60px !important;
+        }
+
+        #meme_text {
+          font-size: 50px !important;
+        }
+      }
+
       #meme_text_top {
         top: 5px;
         font-size: 6vw;
@@ -95,6 +107,11 @@
         padding-right: 105px;
         height: 38px;
       }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -102,56 +119,58 @@
   </head>
 
   <body>
-    <form>
-      <p>
-        <label for="user_picture">Meme pic:</label>
-        <input
-          type="file"
-          id="user_picture"
-          maxlength="70"
-          onchange="update_image()"
-        />
-        or
-        <button type="button" id="dog_button" onclick="call_dog()">
-          gimme a dog
-        </button>
-      </p>
-      <p>
-        <label for="user_text_top">Meme text top:</label>
-        <input
-          type="text"
-          id="user_text_top"
-          maxlength="70"
-          oninput="update_text_top()"
-        />
-      </p>
-      <p>
-        <label for="user_text">Meme text bottom:</label>
-        <input
-          type="text"
-          id="user_text"
-          maxlength="70"
-          oninput="update_text()"
-        />
-      </p>
-      <p id="give_meme">
-        <label for="ai_text">Meme text generator:</label>
-        <input type="text" id="ai_text" maxlength="70" />
-        <button type="button" onclick="call_meme()" id="meme_button">
-          give me meme
-        </button>
-      </p>
-    </form>
+    <div class="container">
+      <form>
+        <p>
+          <label for="user_picture">Meme pic:</label>
+          <input
+            type="file"
+            id="user_picture"
+            maxlength="70"
+            onchange="update_image()"
+          />
+          or
+          <button type="button" id="dog_button" onclick="call_dog()">
+            gimme a dog
+          </button>
+        </p>
+        <p>
+          <label for="user_text_top">Meme text top:</label>
+          <input
+            type="text"
+            id="user_text_top"
+            maxlength="70"
+            oninput="update_text_top()"
+          />
+        </p>
+        <p>
+          <label for="user_text">Meme text bottom:</label>
+          <input
+            type="text"
+            id="user_text"
+            maxlength="70"
+            oninput="update_text()"
+          />
+        </p>
+        <p id="give_meme">
+          <label for="ai_text">Meme text generator:</label>
+          <input type="text" id="ai_text" maxlength="70" />
+          <button type="button" onclick="call_meme()" id="meme_button">
+            give me meme
+          </button>
+        </p>
+      </form>
 
-    <div id="meme_container" style="display: none">
-      <div id="meme_text"></div>
-      <div id="meme_text_top"></div>
-      <div id="meme_picture"><img src="" /></div>
+      <div id="meme_container" style="display: none">
+        <div id="meme_text"></div>
+        <div id="meme_text_top"></div>
+        <div id="meme_picture"><img src="" /></div>
+      </div>
+
+      <p id="save_button" style="display: none">
+        <button onclick="download_meme()">Save</button>
+      </p>
     </div>
-
-    <p id="save_button" style="display: none">
-      <button onclick="download_meme()">Save</button>
-    </p>
 
     <script type="text/javascript">
       function update_text() {
