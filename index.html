@@ -217,18 +217,21 @@
         meme_button.innerHTML = "loading...";
         meme_button.disabled = true;
         var meme_text = document.getElementById("ai_text");
-        var data = await fetch("/api/meme", {
-          method: "post",
-          body: JSON.stringify({ description: meme_text.value }),
-        });
-        var meme = await data.json();
-        var user_text_top = document.getElementById("user_text_top");
-        user_text_top.value = meme.firstLine;
-        update_text_top();
+        var description = meme_text.value;
+        if (description.length >= 1) {
+          var data = await fetch("/api/meme", {
+            method: "post",
+            body: JSON.stringify({ description: meme_text.value }),
+          });
+          var meme = await data.json();
+          var user_text_top = document.getElementById("user_text_top");
+          user_text_top.value = meme.firstLine;
+          update_text_top();
 
-        var user_text_bottom = document.getElementById("user_text");
-        user_text_bottom.value = meme.secondLine;
-        update_text();
+          var user_text_bottom = document.getElementById("user_text");
+          user_text_bottom.value = meme.secondLine;
+          update_text();
+        }
         meme_button.innerHTML = "give me meme";
         meme_button.disabled = false;
       }
