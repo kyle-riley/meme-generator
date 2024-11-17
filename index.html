@@ -44,6 +44,7 @@
         }
 
         #meme_container {
+            display: inline-block;
             position: relative;
         }
 
@@ -73,6 +74,7 @@
 
         <div id="meme_picture"><img src="" height="500" width="600"></div>
     </div>
+    <p><button onclick="download_meme()">Save</button></p>
     <script type="text/javascript">
         function update_text() {
             var user_text = document.getElementById("user_text");
@@ -97,7 +99,7 @@
             var data = await fetch("/api/dogs")
             var dog = await data.json()
             var img = document.querySelector('img');
-            img.src = dog.url
+            img.src = dog.base64;
             dog_button.innerHTML="gimme a dog";
             dog_button.disabled=false;
         }
@@ -121,7 +123,18 @@
             meme_button.innerHTML="give me meme";
             meme_button.disabled=false;
         }
+        async function download_meme() {
+          const canvas = await html2canvas(
+            document.querySelector("#meme_container")
+          );
+          const data = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.download = "meme.png";
+          link.href = data;
+          link.click();
+        }
     </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 
 </html>
