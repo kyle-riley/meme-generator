@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style type="text/css">
+    #meme_text {
+        background-color: transparent;
+        font-size: 40px;
+        font-family: "Impact";
+        color: white;
+        text-shadow: black 0px 0px 10px;
+        width: 600px;
+        position: absolute;
+        left: 150px;
+        top: 550px;
+        text-transform: uppercase;
+    }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dog memes ('0')</title>
 </head>
 <body>
-    <h1>Meme Generator The best thing sice buttered toast!</h1>
+    <h1>Meme Generator</h1>
+    <form> 
+<p>
+    Meme text: <input type="text" id="user_text" maxlength="70" oninput="update_text()"></p>
+<p>  Meme pic: <input type="file" id="user_picture" maxlength="70" onchange="update_image()"></p>
+    </form>
+    <div id="meme_text"></div>
+    <div id="meme_picture"><img src="" height="500" width="600"></div>
+    <script type="text/javascript">
+        function update_text(){
+        var user_text = document.getElementById("user_text");
+        var meme_text = document.getElementById("meme_text");
+        meme_text.innerHTML = user_text.value;
+        }
+        function update_image(){
+        var img = document.querySelector('img');
+        var file = document.querySelector('input[type=file]').files[0];
+        img.src = window.URL.createObjectURL(file);
+
+        }
+    </script>
 </body>
 </html>
