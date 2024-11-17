@@ -63,9 +63,9 @@
             Meme text top: <input type="text" id="user_text_top" maxlength="70" oninput="update_text_top()"></p>
         Meme text bottom: <input type="text" id="user_text" maxlength="70" oninput="update_text()"></p>
         Meme text generator: <input type="text" id="ai_text" maxlength="70"> <button type="button"
-            onclick="call_meme()">give me meme</button></p>
+            onclick="call_meme()" id="meme_button">give me meme</button></p>
         <p> Meme pic: <input type="file" id="user_picture" maxlength="70" onchange="update_image()"> or <button
-                type="button" onclick="call_dog()">gimme a dog</button></p>
+                type="button" id="dog_button" onclick="call_dog()">gimme a dog</button></p>
     </form>
     <div id="meme_container">
         <div id="meme_text"></div>
@@ -91,13 +91,20 @@
             meme_text_top.innerHTML = user_text_top.value;
         }
         async function call_dog() {
+            var dog_button = document.getElementById("dog_button");
+            dog_button.innerHTML="loading...";
+            dog_button.disabled=true;
             var data = await fetch("/api/dogs")
             var dog = await data.json()
             var img = document.querySelector('img');
             img.src = dog.url
-
+            dog_button.innerHTML="gimme a dog";
+            dog_button.disabled=false;
         }
         async function call_meme() {
+            var meme_button = document.getElementById("meme_button");
+            meme_button.innerHTML="loading...";
+            meme_button.disabled=true;
              var meme_text = document.getElementById("ai_text");
             var data = await fetch("/api/meme", {
                 method: "post",
@@ -111,6 +118,8 @@
             var user_text_bottom = document.getElementById("user_text");
             user_text_bottom.value = meme.secondLine;
             update_text()
+            meme_button.innerHTML="give me meme";
+            meme_button.disabled=false;
         }
     </script>
 </body>
