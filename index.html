@@ -5,14 +5,14 @@
     <style type="text/css">
         #meme_text {
             background-color: transparent;
-            font-size: 40px;
+            font-size: 50px;
             font-family: "Impact";
             color: white;
-            text-shadow: black 0px 0px 10px;
+            -webkit-text-stroke: 2px black;
             width: 600px;
             position: absolute;
             left: 0px;
-            bottom: 20px;
+            bottom: 10px;
             text-transform: uppercase;
             text-align: center;
 
@@ -23,16 +23,22 @@
             display: inline-block;
         }
 
+        #meme_picture img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
         #meme_text_top {
             background-color: transparent;
             font-size: 60px;
             font-family: "Impact";
             color: white;
-            text-shadow: black 0px 0px 10px;
+            -webkit-text-stroke: 2px black;
             width: 600px;
             position: absolute;
             left: 0px;
-            top: 10px;
+            top: 5px;
             text-transform: uppercase;
             text-align: center;
         }
